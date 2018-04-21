@@ -9,10 +9,10 @@
 
 [![Docker build](http://dockeri.co/image/polinux/elastichq)](https://hub.docker.com/r/polinux/elastichq/)
 
-Felling like supporting me in my projects use donate button. Thank You!  
+Felling like supporting me in my projects, please use donate button. Thank You!  
 [![](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.me/POzgo)
 
-[Docker Image](https://registry.hub.docker.com/u/polinux/elasticHQ/) with [ElasticHQ](http://www.elastichq.org/). It's using tiny image provided by Alpine.  
+[Docker Image](https://registry.hub.docker.com/u/polinux/elasticHQ/) with [ElasticHQ](http://www.elastichq.org/). It's using tiny image provided by Alpine. It's over 100Mb smaller than official image.
 
 ElasticHQ Management and Monitoring for Elasticsearch.
 
