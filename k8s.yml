@@ -1,0 +1,39 @@
+## Service
+kind: Service
+apiVersion: v1
+metadata:
+  name: elastichq
+  labels:
+    run: elastichq
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: 5000
+      name: elastichq
+      protocol: TCP
+  selector:
+    run: docker-registry
+  # Replace with external IP's
+  externalIPs:
+    - IPV4_1
+    - IPV4_2
+
+---
+## Deployment
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: elastichq
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: elastichq
+    spec:
+      containers:
+        - name: elastichq
+          image: polinux/elastichq:latest
+          ports:
+            - containerPort: 5000
