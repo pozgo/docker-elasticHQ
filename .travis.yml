@@ -1,0 +1,32 @@
+services:
+  - docker
+
+addons:
+  hosts:
+    - elastichq
+
+before_install:
+  - docker --version
+  - docker pull python:3.6-alpine3.7
+
+
+jobs:
+  include:
+    - stage: build&test
+      script:
+        - docker build -t polinux/elastichq:staging .
+        - docker run -d -p 5000:5000 --name elastichq polinux/elastichq:staging
+        - sleep 10
+        - curl -sSLi http://elastichq:5000  | grep '200 OK'
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - docker push polinux/elastichq:staging
+
+    - stage: deploy
+      if: branch = master
+      script:
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - docker pull polinux/elastichq:staging
+        - docker tag polinux/elastichq:staging polinux/elastichq:latest
+        - export RELEASE=$(grep "ESHQ_VERSION=" Dockerfile | sed 's|^.*=||g' |awk '{print $1}' | sed 's|"||g'); docker tag polinux/elastichq:staging polinux/elastichq:${RELEASE}
+        - export RELEASE=$(grep "ESHQ_VERSION=" Dockerfile | sed 's|^.*=||g' |awk '{print $1}' | sed 's|"||g'); docker push polinux/elastichq:${RELEASE}
+        - docker push polinux/elastichq:latest
